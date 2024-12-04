@@ -41,22 +41,47 @@ function handleInput(value) {
             expression = "";
         }
     } else if (value === "√") {
-        expression = Math.sqrt(eval(expression)).toString();
-        display.value = expression;
+        try {
+            expression = Math.sqrt(eval(expression)).toString();
+            display.value = expression;
+        } catch {
+            display.value = "Error";
+            expression = "";
+        }
     } else if (value === "%") {
-        expression = (eval(expression) / 100).toString();
-        display.value = expression;
+        try {
+            expression = (eval(expression) / 100).toString();
+            display.value = expression;
+        } catch {
+            display.value = "Error";
+            expression = "";
+        }
     } else if (value === "MC") {
-        memory = 0;
+        memory = 0; // Reset memory
+        display.value = "Memory Cleared";
     } else if (value === "MR") {
-        expression = memory.toString();
-        display.value = memory;
+        if (memory !== 0) {
+            expression += memory.toString(); // Append memory to expression
+            display.value = expression;
+        } else {
+            display.value = "Memory Empty";
+        }
     } else if (value === "M+") {
-        memory += eval(expression);
+        try {
+            memory += eval(expression || "0"); // Add current expression to memory
+            display.value = "Memory: " + memory;
+        } catch {
+            display.value = "Error";
+        }
     } else if (value === "M-") {
-        memory -= eval(expression);
+        try {
+            memory -= eval(expression || "0"); // Subtract current expression from memory
+            display.value = "Memory: " + memory;
+        } catch {
+            display.value = "Error";
+        }
     } else {
-        expression += value;
+        expression += value; // Append value to the expression
         display.value = expression;
     }
 }
